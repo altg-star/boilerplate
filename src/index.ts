@@ -1,35 +1,29 @@
 import fastify from "fastify";
+// plugin
 import cors from "@fastify/cors";
 import swagger from "@fastify/swagger";
+// config
 import config from "config";
+import swaggerOptions from "./plugin/swagger";
+// routes
+import routes from "./routes";
 
-//config
-import swaggerOptions from "./utils/swagger";
-const serverConfig = config.get<{ port: number; address: string }>("server");
+const serverConfig = config.get<{ port: number; host: string }>("server");
 
-// init
-const server = fastify();
+// init with logger
+const server = fastify({ logger: true });
 // swagger
 server.register(swagger, swaggerOptions);
 // cors
 server.register(cors);
-
-
-/**
- * @name health-check
- * @method GET
- * @url /health-check
- * @description health check api
- */
-server.get("/health-check", async (request, reply) => {
-    reply.send("OK");
-});
+// routes
+server.register(routes);
 
 const start = async () => {
     try {
-        const listenResult = await server.listen(serverConfig.port, serverConfig.address);
+        const listening = await server.listen({ port: serverConfig.port, host: serverConfig.host });
         server.swagger();
-        console.log(`Server is listening at ${listenResult}`);
+        console.log(`Server is listening at ${listening}`);
     } catch (err) {
         server.log.error(err);
         process.exit(1);

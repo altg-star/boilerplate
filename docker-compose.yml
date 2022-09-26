@@ -1,8 +1,19 @@
 version: '3.4'
 
-services:
+services: 
+  database:
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: local
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
   fastify:
-    image: fastify
+    image: fastify-nodejs
     build:
       context: .
       dockerfile: ./Dockerfile

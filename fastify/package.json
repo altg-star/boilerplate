@@ -8,7 +8,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node ./dist/index.js",
-    "watch": "nodemon ./src/index.ts"
+    "watch": "nodemon ./src/index.ts",
+    "knex:migrate:make": "knex --knexfile ./database/knexfile.ts migrate:make -x ts",
+    "knex:migrate:latest": "knex --knexfile ./database/knexfile.ts migrate:latest",
+    "knex:migrate:rollback": "knex --knexfile ./database/knexfile.ts migrate:rollback"
   },
   "dependencies": {
     "@fastify/cors": "^8.1.0",
@@ -18,7 +21,9 @@
     "config": "^3.3.7",
     "fastify": "4.5.2",
     "fastify-plugin": "4.2.0",
-    "luxon": "^3.0.1"
+    "knex": "^2.3.0",
+    "luxon": "^3.0.1",
+    "pg": "^8.8.0"
   },
   "devDependencies": {
     "@types/config": "^3.3.0",

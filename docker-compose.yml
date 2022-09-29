@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services: 
   database:
@@ -9,15 +9,20 @@ services:
       POSTGRES_DB: local
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - database-data:/var/lib/postgresql/data/
 
   fastify:
-    image: fastify-nodejs
+    image: fastify/node-js
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./fastify/Dockerfile
     environment:
       NODE_ENV: production
     ports:
       - 8080:8080
+
+volumes:
+  database-data:

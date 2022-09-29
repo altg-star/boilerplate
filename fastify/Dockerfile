@@ -14,6 +14,6 @@ RUN npm install --only=production
 FROM node:lts-alpine
 WORKDIR /usr/app
 COPY --from=ts-remover /usr/app ./
-COPY ./config ./config
+COPY ./config/docker.js ./config/local.js
 EXPOSE 8080
 CMD ["index.js"]

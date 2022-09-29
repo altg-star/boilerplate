@@ -1,6 +1,4 @@
-process.env["NODE_CONFIG_DIR"] = "../config";
-require('ts-node/register');
-import { Knex } from "knex";
+import knex from "knex";
 import config from "config";
 const DBConfig = config.get<{
     "host": string,
@@ -10,8 +8,7 @@ const DBConfig = config.get<{
     "password": string,
 }>("db");
 
-
-export default {
+export default knex({
     client: "pg",
     connection: {
         host: DBConfig.host,
@@ -24,12 +21,5 @@ export default {
     pool: {
         min: 2,
         max: 10
-    },
-    migrations: {
-        tableName: 'knex_migrations',
-        directory: "./migrations",
-    },
-    seeds: {
-        directory: "./seeds",
-    },
-} as Knex.Config;
+    }
+});
